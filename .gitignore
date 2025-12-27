@@ -1,0 +1,43 @@
+# ===== Python cache =====
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===== Virtual environments =====
+venv/
+env/
+.venv/
+
+# ===== Jupyter =====
+.ipynb_checkpoints/
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+
+# ===== Logs =====
+*.log
+prediction_logs.csv
+
+# ===== Large model & data files =====
+*.pkl
+*.joblib
+*.csv
+*.xlsx
+
+# ===== Flask =====
+instance/
+*.sqlite3
+
+# ===== IDE =====
+.vscode/
+.idea/
+
+# ===== Build / dist =====
+build/
+dist/
+*.egg-info/
+
+# ===== Secrets =====
+.env
