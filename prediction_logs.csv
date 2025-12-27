@@ -1,0 +1,14 @@
+prediction,prediction_label,full_name,probability_default,probability_payback,confidence,age,gender,marital_status,education_level,employment_status,loan_amount,annual_income,debt_to_income_ratio,interest_rate,credit_score,loan_purpose,grade_subgrade,prediction_timestamp
+0.0,Will Not Repay	,Ange T,0.5718696141225517,0.4281303858774483,0.5718696141225517,35,35,Married,Bachelor,Employed,30000,100000,25.5,8.5,720,business,A1,2025-12-27 13:39:38
+0.0,Will Not Repay	,kaka,0.9793923590397375,0.020607640960262463,0.9793923590397375,28,Female,Single,Master,Employed,170000,17000,30.0,7.2,750,business,A2,2025-12-27 13:39:38
+2025-12-27 13:41:25,ange,30000.0,100000.0,25.5,720.0,8.5,Female,Single,Bachelor,Employed,Business,A1,Will Not Repay,0.4281
+Ange T,Will Repay,0.772,10000,960000,15,710,4.5,0,0.0,1,0,0,0,2025-12-27 13:42:31
+Emmy,Will Repay,0.9757,18000,150000,18,690,8.0,0,1.0,1,1,2,1,2025-12-27 13:42:31
+Karuhanga,Will Not Repay,0.4984,19000,17000,14,860,4.2,1,0.0,2,0,1,4,2025-12-27 13:42:31
+Katushabe,Will Not Repay,0.1655,18000,22000,45,520,12.5,0,0.0,0,2,2,11,2025-12-27 13:42:31
+Aline Uwase,Will Not Repay,0.0694,14000,20000,40,540,11.8,1,0.0,0,2,2,10,2025-12-27 13:42:31
+Mbabazi wa John,Will Repay,0.7148,30000,22000,38,560,10.5,0,2.0,1,1,0,14,2025-12-27 13:42:31
+Tumwine,Will Not Repay,0.1074,26000,45000,42,510,13.0,1,3.0,0,2,3,12,2025-12-27 13:42:31
+kayirebwa,Will Repay,0.7801,33000,24000,36,580,9.8,0,1.0,1,1,0,13,2025-12-27 13:42:31
+Keza,Will Not Repay,0.0845,18000,21000,39,530,11.2,1,0.0,0,2,2,9,2025-12-27 13:42:31
+ndekwe,Will Repay,0.7485,44000,36000,37,570,10.9,0,1.0,1,1,0,14,2025-12-27 13:42:31

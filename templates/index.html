@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loan Payback Prediction</title>
+     
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+
+    <!-- jQuery & DataTables JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+ 
+</head>
+<body>
+    <div style="text-align: center;">
+
+<button id="showBatchBtn" class="predict-btn success">
+    Batch Prediction Options
+</button>
+</div>
+<div style="text-align: right;">
+
+<button id="backToFormBtn"
+        class="predict-btn warning"
+        style="display:none;">
+    Single Prediction Option
+</div>
+</button>
+
+<div id="batchOptions" style="display:none; margin-top:20px;">
+
+    <div style="margin-bottom:15px;">
+        <div style="text-align: right;">
+        <a href="/download_sample_users"
+           class="predict-btn warning"
+           style="text-decoration:none;">
+            Download Sample Users CSV
+        </a>
+    </div>
+    </div>
+
+    <div class="file-upload">
+        <label for="batchFile">
+            Click here to upload CSV file
+        </label>
+        <input type="file" id="batchFile" accept=".csv">
+        <div style="margin-top:15px;">
+            <button type="button"
+                    id="batchPredictBtn"
+                    class="predict-btn primary">
+                Predict Batch
+            </button>
+        </div>
+        <div id="batchResult" style="margin-top:15px;"></div>
+    </div>
+
+</div>
+
+
+
+<div class="container">
+    <h1 style="color:blue;">Loan Payback Prediction</h1>
+    <p class="subtitle">Predict the probability of successful loan repayment</p>
+
+    <form id="predictionForm">
+
+        <div class="section-card">
+            <h3 style="color:blue;">Personal Information</h3>
+            <div class="form-row">
+                <div class="input-group">
+                    <label> Your Full Name</label>
+                    <input type="text" name="full_name" placeholder="Enter your name" required>
+                </div>
+                <div class="input-group">
+                    <label> your Age</label>
+                    <input type="number" name="age" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label> Your Gender</label>
+                    <select name="gender" required>
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label> Your Marital Status</label>
+                    <select name="marital_status" required>
+                        <option value="">Select</option>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label> Your Education Level</label>
+                    <select name="education_level" required>
+                        <option value="">Select</option>
+                        <option value="Secondary">Secondary</option>
+                        <option value="Bachelor">Bachelor</option>
+                        <option value="Master">Master</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label> Your Employment Status</label>
+                    <select name="employment_status" required>
+                        <option value="">Select</option>
+                        <option value="Employed">Employed</option>
+                        <option value="Self-Employed">Self-Employed</option>
+                        <option value="Unemployed">Unemployed</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h3 style="color:blue;">Financial Information</h3>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Loan Amount</label>
+                    <input type="number" name="loan_amount" required>
+                </div>
+                <div class="input-group">
+                    <label>Annual Income</label>
+                    <input type="number" name="annual_income" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Debt to Income Ratio (%)</label>
+                    <input type="number" name="debt_to_income_ratio" step="0.01" required>
+                </div>
+                <div class="input-group">
+                    <label>Interest Rate (%)</label>
+                    <input type="number" name="interest_rate" step="0.01" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Credit Score</label>
+                    <input type="number" name="credit_score" min="300" max="850" required>
+                </div>
+                <div class="input-group">
+                    <label>Loan Purpose</label>
+                    <select name="loan_purpose" required>
+                        <option value="">Select</option>
+                        <option value="Business">Business</option>
+                        <option value="Education">Education</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Housing">Housing</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-group">
+                    <label>Grade / Subgrade</label>
+                    <input type="text" name="grade_subgrade" placeholder="e.g., A1, B2" required>
+                </div>
+            </div>
+
+                <button type="submit" class="single-predict-btn">Predict</button>
+                <div id="result"></div>
+
+    </form>
+
+    <div class="section-card">
+        <h3>Recent Predictions</h3>
+        <table id="logsTable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Prediction</th>
+                    <th>Probability (%)</th>
+                    <th>Loan Amount</th>
+                    <th>Annual Income</th>
+                    <th>Debt to Income Ratio</th>
+                    <th>Credit Score</th>
+                    <th>Interest Rate</th>
+                    <th>Gender</th>
+                    <th>Marital Status</th>
+                    <th>Education Level</th>
+                    <th>Employment Status</th>
+                    <th>Loan Purpose</th>
+                    <th>Grade / Subgrade</th>
+                    <th>Timestamp</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    const form = document.getElementById("predictionForm");
+    const resultDiv = document.getElementById("result");
+    let logsDataTable;
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        Object.keys(data).forEach(key => {
+            if (!isNaN(data[key]) && data[key] !== '') {
+                data[key] = Number(data[key]);
+            }
+        });
+
+        try {
+            const response = await fetch("/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) throw new Error(`Server returned ${response.status}`);
+
+            const result = await response.json();
+            const color = result.prediction === "Will Repay" ? "#16a34a" : "#dc2626"; // green for repay, red for not repay
+
+resultDiv.innerHTML = `
+    Prediction: <b style="color:${color}">${result.prediction}</b><br>
+    Probability: <b style="color:${color}">${(result.probability * 100).toFixed(2)}%</b>
+`;
+
+
+            resultDiv.innerHTML = `
+                Prediction: <b>${result.prediction}</b><br>
+                Probability: <b>${(result.probability * 100).toFixed(2)}%</b>
+            `;
+
+            await window.loadLogs(); // ✅ works everywhere now
+
+        } catch (err) {
+            resultDiv.innerHTML =
+                `<span style="color:red;">Error: ${err.message}</span>`;
+        }
+    });
+
+    /* 🔥 MAKE GLOBAL */
+    window.loadLogs = async function () {
+        try {
+            const response = await fetch("/logs");
+            if (!response.ok) throw new Error(`Server returned ${response.status}`);
+
+            const logs = await response.json();
+            const tbody = document.querySelector("#logsTable tbody");
+            tbody.innerHTML = "";
+
+            logs.forEach(log => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${log.full_name || "-"}</td>
+                        <td>${log.prediction}</td>
+                        <td>${(log.probability * 100).toFixed(2)}</td>
+                        <td>${log.loan_amount}</td>
+                        <td>${log.annual_income}</td>
+                        <td>${log.debt_to_income_ratio}</td>
+                        <td>${log.credit_score}</td>
+                        <td>${log.interest_rate}</td>
+                        <td>${log.gender}</td>
+                        <td>${log.marital_status}</td>
+                        <td>${log.education_level}</td>
+                        <td>${log.employment_status}</td>
+                        <td>${log.loan_purpose}</td>
+                        <td>${log.grade_subgrade}</td>
+                        <td>${log.timestamp}</td>
+                    </tr>
+                `;
+            });
+
+            if ($.fn.DataTable.isDataTable("#logsTable")) {
+                logsDataTable.clear().destroy();
+            }
+
+            logsDataTable = $('#logsTable').DataTable({
+                responsive: true,
+                scrollX: true,
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
+                order: [[14, "desc"]],
+                language: {
+                    search: "Search Predictions:",
+                    zeroRecords: "No predictions found"
+                }
+            });
+
+        } catch (err) {
+            document.querySelector("#logsTable tbody").innerHTML =
+                `<tr><td colspan="15" style="color:red;">Error loading logs</td></tr>`;
+        }
+    };
+
+    window.loadLogs(); // initial load
+});
+
+/* Batch toggle buttons (already correct) */
+const showBatchBtn = document.getElementById("showBatchBtn");
+const backToFormBtn = document.getElementById("backToFormBtn");
+const batchOptions = document.getElementById("batchOptions");
+const predictionForm = document.getElementById("predictionForm");
+
+showBatchBtn.addEventListener("click", () => {
+    predictionForm.style.display = "none";
+    batchOptions.style.display = "block";
+    showBatchBtn.style.display = "none";
+    backToFormBtn.style.display = "inline-block";
+});
+
+backToFormBtn.addEventListener("click", () => {
+    predictionForm.style.display = "block";
+    batchOptions.style.display = "none";
+    showBatchBtn.style.display = "inline-block";
+    backToFormBtn.style.display = "none";
+});
+</script>
+
+<script src="{{ url_for('static', filename='js/batch_predict.js') }}"></script>
+</body>
+</html>
